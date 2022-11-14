@@ -1,22 +1,21 @@
 import pandas
 from sklearn import *
-from pandas import *
 from numpy import *
 from sklearn.metrics import *
 import numpy
 
-
 df = pandas.read_csv("DataRaw.csv")
+
 X = df[['Window Size', 'Packet Size']]
 Y1 = df['Packet Delivery Ratio']
 Y2 = df['Dropped Packets']
 Y3 = df['Avg Throughput']
 Y4 = df['Avg End to End Delay']
 
-regr1 = tree.DecisionTreeRegressor()
-regr2 = tree.DecisionTreeRegressor()
-regr3 = tree.DecisionTreeRegressor()
-regr4 = tree.DecisionTreeRegressor()
+regr1 = tree.DecisionTreeRegressor(max_depth=5)
+regr2 = tree.DecisionTreeRegressor(max_depth=5)
+regr3 = tree.DecisionTreeRegressor(max_depth=5)
+regr4 = tree.DecisionTreeRegressor(max_depth=5)
 
 regr1.fit(X.values, Y1)
 regr2.fit(X.values, Y2)
@@ -42,15 +41,13 @@ for i in wSize:
         predictedETED = regr4.predict([[i, j]])
         predictedETEDList.append(predictedETED)
 
-#Changing to proper list
+#Converting to list
 predictedPDRList = [prod(x) for x in predictedPDRList]
 predictedDPList = [prod(x) for x in predictedDPList]
 predictedThptList = [prod(x) for x in predictedThptList]
 predictedETEDList = [prod(x) for x in predictedETEDList]
 
-print(predictedPDRList)
-
-#Actual Values
+#Actual Values List
 actualPDRList = df['Packet Delivery Ratio'].tolist()
 actualDPList = df['Dropped Packets'].tolist()
 actualThptList = df['Avg Throughput'].tolist()
